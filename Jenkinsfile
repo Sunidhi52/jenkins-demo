@@ -24,14 +24,14 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running Maven tests...'
-                sh 'mvn test'
+                bat 'mvn test'
             }
         }
 
         stage('Package') {
             steps {
                 echo 'Packaging the application...'
-                sh 'mvn package'
+                bat 'mvn package'
             }
         }
 
