@@ -2,15 +2,15 @@ pipeline {
     agent any
 
     tools {
-        // Set Maven and JDK tools installed in Jenkins
-        maven 'MAVEN'
-        jdk 'JAVA_HOME'
+        maven 'MAVEN'    // Use the Maven installation configured in Jenkins (Manage Jenkins → Tools)
+        jdk 'JAVA_HOME'      // Use your configured JDK (adjust name as per your Jenkins setup)
     }
 
     stages {
-        stage('Checkout SCM') {
+        stage('Checkout Code') {
             steps {
-                checkout scm
+                echo 'Cloning repository from GitHub...'
+                git branch: 'master', url: 'https://github.com/Sunidhi52/jenkins-demo.git'
             }
         }
 
@@ -38,11 +38,6 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Simulating deployment to staging server...'
-
-                // Run the jar created
-                echo 'Running the JAR file...'
-                bat 'java -jar target\\Jenkins_demo-1.0-SNAPSHOT.jar'
-
                 echo 'Deployment completed successfully!'
             }
         }
