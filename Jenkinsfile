@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     tools {
-        maven 'MAVEN'    // Use the Maven installation configured in Jenkins (Manage Jenkins → Tools)
-        jdk 'JAVA_HOME'      // Use your configured JDK (adjust name as per your Jenkins setup)
+        maven 'MAVEN'      // Maven installation configured in Jenkins
+        jdk 'JAVA_HOME'     // JDK configured in Jenkins
     }
 
     stages {
@@ -23,7 +23,8 @@ pipeline {
 
         stage('Test') {
             steps {
-                echo 'Running Maven tests...'
+                echo 'Running TestNG tests via Maven...'
+                // Make sure your pom.xml has surefire configured to use testng.xml
                 bat 'mvn test'
             }
         }
@@ -45,10 +46,10 @@ pipeline {
 
     post {
         success {
-            echo '✅ Build and deployment succeeded!'
+            echo '✅ Build, test, and deployment succeeded!'
         }
         failure {
-            echo '❌ Build failed! Please check logs.'
+            echo '❌ Build or tests failed! Please check logs.'
         }
     }
 }
