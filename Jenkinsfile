@@ -2,53 +2,57 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven-3.9.0'  // adjust to your Maven tool name in Jenkins
-        jdk 'Java-21'         // adjust to your JDK tool name in Jenkins
+        maven 'MAVEN'      // Maven installation configured in Jenkins
+        jdk 'JAVA_HOME'     // JDK configured in Jenkins
     }
 
     stages {
-        stage('Checkout') {
+
+        stage('Checkout Code') {
             steps {
-                git branch: 'master', url: 'https://github.com/Sunidhi52/jenkins-demo.git', credentialsId: 'jenkins_nidz'
+                echo '🔄 Cloning repository from GitHub...'
+                git branch: 'master',
+                    url: 'https://github.com/Sunidhi52/jenkins-demo.git'
             }
         }
 
         stage('Build') {
             steps {
-                echo "🔨 Running Maven clean and compile..."
+                echo '🛠 Running Maven clean and compile...'
                 bat 'mvn clean compile'
             }
         }
 
         stage('Test') {
             steps {
-                echo "🧪 Running TestNG tests..."
+                echo '🧪 Running TestNG tests via Maven...'
+                // Ensure pom.xml has surefire configured to use testng.xml
                 bat 'mvn test'
             }
         }
 
         stage('Package') {
             steps {
-                echo "📦 Packaging the application..."
+                echo '📦 Packaging the application into a jar...'
                 bat 'mvn package'
             }
         }
 
         stage('Deploy & Run Jar') {
             steps {
-                echo "🚀 Running the application jar..."
-                // Use full path to jar or relative path; ensure Main-Class is set in POM
-                bat 'java -jar target\\Jenkins_demo-1.0-SNAPSHOT.jar'
+                echo '🚀 Running the application jar...'
+                // Run jar with main class defined in pom.xml manifest
+                bat 'java -jar "%WORKSPACE%\\target\\Jenkins_demo-1.0-SNAPSHOT.jar"'
             }
         }
     }
 
     post {
         success {
-            echo "✅ Build, tests, and jar execution succeeded!"
+            echo '✅ Build, test, and deployment succeeded!'
         }
         failure {
-            echo "❌ Something went wrong! Check the logs above."
+            echo '❌ Build or tests failed! Check logs above.'
         }
     }
 }
