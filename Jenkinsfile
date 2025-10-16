@@ -38,8 +38,8 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo 'Simulating deployment to staging server...'
-                echo 'Deployment completed successfully!'
+                echo 'Running the application...'
+                bat 'java -jar "%WORKSPACE%\\target\\Jenkins_demo-1.0-SNAPSHOT.jar"'
             }
         }
     }
